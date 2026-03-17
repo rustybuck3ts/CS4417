@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    {% if session.get('role') == 'admin' %}
+        <h2 style="color: #8b0000;">Welcome to the Admin Dashboard</h2>
+        <p>You have elevated privileges. You can manage users and feedback from the Admin Dashboard link above.</p>
+    {% else %}
+        <h2>Welcome to the Secure Web App</h2>
+        <p>This application implements secure authentication and input validation to protect against common web vulnerabilities.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>Change Your Password</h3>
+    <form action="{{ url_for('change_password', user_id=session['user_id']) }}" method="POST" style="display: flex; gap: 10px; align-items: center;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="password" name="new_password" placeholder="New Password" required style="width: auto; margin: 0;">
+        <button type="submit">Update Password</button>
+    </form>
+</div>
+
+<div class="card">
+    <h3>Feedback From Users</h3>
+
+    {% if feedback_entries %}
+        {% for entry in feedback_entries %}
+            <div style="border-bottom: 1px solid #eee; padding: 10px 0;">
+                <strong>{{ entry.username }}</strong> 
+                <span style="color: #888; font-size: 0.9em;">on {{ entry.timestamp }}</span>
+                <p style="margin-top: 5px;">{{ entry.message | safe }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No feedback submitted yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

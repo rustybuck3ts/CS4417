@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 50px auto;">
+    <h2>Submit Feedback</h2>
+    <p>We value your thoughts.</p>
+    <form method="POST" action="{{ url_for('feedback') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <label for="message">Your Message:</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

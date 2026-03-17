@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Web App</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
+        .wrapper { max-width: 800px; margin: 0 auto; padding: 20px; }
+        header { background-color: {% if session.get('role') == 'admin' %}#8b0000{% else %}#0056b3{% endif %}; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
+        header a:hover { text-decoration: underline; }
+        .flashes { list-style: none; padding: 0; }
+        .flashes li { padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .flashes .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .flashes .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        input[type="text"], input[type="password"], textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #0056b3; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #004494; }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h2>Secure Web App</h2>
+        </div>
+        <div>
+            {% if session.get('user_id') %}
+                <span>Welcome, {{ session['username'] }}</span>
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('feedback') }}">Submit Feedback</a>
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin') }}" style="color: #ffcccc;">Admin Dashboard</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="wrapper">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

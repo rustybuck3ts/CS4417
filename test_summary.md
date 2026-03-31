@@ -1,6 +1,6 @@
 # CS4417 Application Test Suite Report
 
-**Result**: 17 / 17 Tests Passed :white_check_mark:
+**Result**: 17 / 17 Tests Passed
 **Execution Time**: 27.96s
 
 ## Tested Scenarios
